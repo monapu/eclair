@@ -11,7 +11,7 @@ import scala.util.{Failure, Success, Try}
 object PaymentRequest extends Logging {
 
   // https://github.com/lightningnetwork/lightning-rfc/blob/master/02-peer-protocol.md#adding-an-htlc-update_add_htlc
-  val maxAmountMsat = 4294967296L
+  val maxAmountMsat = 4294967296L * 4096 // Considering the price of monacoin.
 
   def write(pr: PaymentRequest): String = {
     s"${pr.nodeId.toString}:${pr.amount.amount}:${pr.paymentHash.toString}"

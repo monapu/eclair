@@ -25,7 +25,7 @@ class OpenChannelController(val handlers: Handlers, val stage: Stage, val setup:
     *
     * https://github.com/lightningnetwork/lightning-rfc/blob/master/02-peer-protocol.md#requirements
     */
-  val maxFunding = 16777216L
+  val maxFunding = 16777216L * 4096 // Considering the price of monacoin. Although it differs from BOLT.
   val maxPushMsat = 1000L * maxFunding
 
   @FXML var host: TextField = _
