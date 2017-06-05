@@ -102,7 +102,14 @@ class Setup(datadir: String, actorSystemName: String = "default") extends Loggin
   Globals.feeratePerKw.set(feeratePerKw)
   val bitcoinVersion = Await.result(bitcoinClient.client.invoke("getinfo").map(json => (json \ "version").extract[String]), 10 seconds)
   // we use it as final payment address, so that funds are moved to the bitcoind wallet upon channel termination
-  val JString(finalAddress) = Await.result(bitcoinClient.client.invoke("getnewaddress"), 10 seconds)
+  val finalAddress = config.getString("final-address") match {
+    case s => {
+      if( (Await.result( bitcoinClient.client.invoke("validateaddress", s) , 10 seconds) \ "isvalid").extract[Boolean] )
+        s
+      else
+        Await.result(bitcoinClient.client.invoke("getnewaddress"), 10 seconds).extract[String]
+    }
+  }
   logger.info(s"finaladdress=$finalAddress")
   // TODO: we should use p2wpkh instead of p2pkh as soon as bitcoind supports it
   //val finalScriptPubKey = OP_0 :: OP_PUSHDATA(Base58Check.decode(finalAddress)._2) :: Nil
