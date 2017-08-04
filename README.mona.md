@@ -4,9 +4,7 @@
 
 zeromq機能が有効化されたmonacoin coreが必要です。
 
-windows版の公式バイナリではzeromqが有効になっていません。以下の非公式バージョンを使ってください。
-
-https://github.com/monapu/monacoin/releases/tag/monacoin-0.13-zeromq-win
+moancoin core 0.14.2以降の公式バイナリでは有効になっています。
 
 ## 設定方法
 
