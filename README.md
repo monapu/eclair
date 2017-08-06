@@ -27,7 +27,7 @@ Please see the latest [release note](https://github.com/ACINQ/eclair/releases) f
 
 ## Installation
 
-:warning: **Those are valid for the most up-to-date, unreleased, version of eclair. Here are the [instructions for Eclair 0.2-alpha3](https://github.com/ACINQ/eclair/blob/v0.2-alpha3/README.md#installation)**.
+:warning: **Those are valid for the most up-to-date, unreleased, version of eclair. Here are the [instructions for Eclair 0.2-alpha4](https://github.com/ACINQ/eclair/blob/v0.2-alpha4/README.md#installation)**.
 
 ### Configuring Bitcoin Core
 
@@ -56,7 +56,12 @@ You need to first install java, more precisely a [JRE 1.8](http://www.oracle.com
 
  :warning: If you are using the OpenJDK JRE, you will need to build OpenJFX yourself, or run the application in `--headless` mode.
 
-Then download the latest fat jar and run:
+Then download the latest fat jar and depending on whether or not you want a GUI run the following command:
+* with GUI:
+```shell
+java -jar eclair-node-javafx_xxxxxx-fat.jar
+```
+* without GUI:
 ```shell
 java -jar eclair-node_xxxxxx-fat.jar
 ```
@@ -68,7 +73,6 @@ java -jar eclair-node_xxxxxx-fat.jar
 option         | description                     | default value
 ---------------|---------------------------------|--------------
 --datadir      | Path to the data directory      | ~/.eclair
---headless     | Run Eclair without the GUI      |
 --help, -h     | Display usage text              |
 
 
@@ -86,20 +90,22 @@ option                       | description               | default value
  eclair.bitcoind.rpcpassword | Bitcoin Core RPC password | bar
  eclair.bitcoind.zmq         | Bitcoin Core ZMQ address  | tcp://127.0.0.1:29000
 
-&rarr; see [`application.conf`](eclair-node/src/main/resources/application.conf) for full reference.
+&rarr; see [`reference.conf`](eclair-core/src/main/resources/reference.conf) for full reference.
 
 ## JSON-RPC API
 
  method       |  params                                       | description
  -------------|-----------------------------------------------|-----------------------------------------------------------
+  getinfo     |                                               | return basic node information (id, chain hash, current block height) 
   connect     | host, port, nodeId                            | connect to another lightning node through a secure connection
   open        | host, port, nodeId, fundingSatoshis, pushMsat | opens a channel with another lightning node
   peers       |                                               | list existing local peers
   channels    |                                               | list existing local channels
   channel     | channelId                                     | retrieve detailed information about a given channel
   network     |                                               | list all nodes that have been announced
-  receive     | amountMsat                                    | generate a payment request for a given amount
+  receive     | amountMsat, description                       | generate a payment request for a given amount
   send        | amountMsat, paymentHash, nodeId               | send a payment to a lightning node
+  send        | paymentRequest                                | send a payment to a lightning node using a BOLT11 payment request
   close       | channelId                                     | close a channel
   close       | channelId, scriptPubKey (optional)            | close a channel and send the funds to the given scriptPubKey
   help        |                                               | display available methods
