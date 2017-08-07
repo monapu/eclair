@@ -56,6 +56,11 @@ case class PaymentRequest(prefix: String, amount: Option[MilliSatoshi], timestam
     case PaymentRequest.FallbackAddressTag(18, hash) if prefix == "lntb" => Base58Check.encode(Base58.Prefix.ScriptAddressTestnet, hash)
     case PaymentRequest.FallbackAddressTag(version, hash) if prefix == "lnbc" => Bech32.encodeWitnessAddress("bc", version, hash)
     case PaymentRequest.FallbackAddressTag(version, hash) if prefix == "lntb" => Bech32.encodeWitnessAddress("tb", version, hash)
+
+    case PaymentRequest.FallbackAddressTag(17, hash) if prefix == "lnmc" => Base58Check.encode(50.toByte, hash)
+    case PaymentRequest.FallbackAddressTag(18, hash) if prefix == "lnmc" => Base58Check.encode(5.toByte, hash)
+    case PaymentRequest.FallbackAddressTag(version, hash) if prefix == "lnmc" => Bech32.encodeWitnessAddress("mc", version, hash)
+
   }
 
   def routingInfo(): Seq[RoutingInfoTag] = tags.collect { case t: RoutingInfoTag => t}
@@ -94,13 +99,14 @@ case class PaymentRequest(prefix: String, amount: Option[MilliSatoshi], timestam
 object PaymentRequest {
 
   // https://github.com/lightningnetwork/lightning-rfc/blob/master/02-peer-protocol.md#adding-an-htlc-update_add_htlc
-  val maxAmount = MilliSatoshi(4294967296L)
+  val maxAmount = MilliSatoshi(4294967296L * 100)
 
   def apply(chainHash: BinaryData, amount: Option[MilliSatoshi], paymentHash: BinaryData, privateKey: PrivateKey, description: String, fallbackAddress: Option[String] = None, expirySeconds: Option[Long] = None, timestamp: Long = System.currentTimeMillis() / 1000L): PaymentRequest = {
     val prefix = chainHash match {
     case Block.RegtestGenesisBlock.blockId => "lntb"
     case Block.TestnetGenesisBlock.blockId => "lntb"
     case Block.LivenetGenesisBlock.blockId => "lnbc"
+    case c if c == BinaryData("ff9f1c0116d19de7c9963845e129f9ed1bfc0b376eb54fd7afa42e0d418c8bb6") => "lnmc"
     }
     PaymentRequest(
       prefix = prefix,
