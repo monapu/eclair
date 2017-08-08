@@ -23,14 +23,14 @@
                 <VBox alignment="TOP_RIGHT" GridPane.rowIndex="0">
                     <children>
                         <Label styleClass="text-strong" text="Amount to receive" />
-                        <Label styleClass="label-description" wrapText="true" textAlignment="RIGHT" text="Maximum of ~0.042 BTC" />
+                        <Label styleClass="label-description" wrapText="true" textAlignment="RIGHT" text="Maximum of ~4.2 MONA" />
                     </children>
                 </VBox>
                 <TextField fx:id="amount" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
                 <ComboBox fx:id="unit" GridPane.columnIndex="2" GridPane.rowIndex="0" GridPane.halignment="RIGHT">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
-                            <String fx:id="milliBTC" fx:value="milliBTC" />
+                            <String fx:id="milliMONA" fx:value="milliMONA" />
                             <String fx:id="Satoshi" fx:value="Satoshi" />
                             <String fx:id="milliSatoshi" fx:value="milliSatoshi" />
                         </FXCollections>

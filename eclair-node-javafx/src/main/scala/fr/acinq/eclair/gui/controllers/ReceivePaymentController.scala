@@ -45,7 +45,7 @@ class ReceivePaymentController(val handlers: Handlers, val stage: Stage) extends
   @FXML def handleCopyInvoice(event: ActionEvent) = ContextMenuUtils.copyToClipboard(paymentRequestTextArea.getText)
 
   @FXML def handleGenerate(event: ActionEvent) = {
-    if ((("milliBTC".equals(unit.getValue) || "Satoshi".equals(unit.getValue))
+    if ((("milliMONA".equals(unit.getValue) || "Satoshi".equals(unit.getValue))
       && GUIValidators.validate(amount.getText, amountError, "Amount must be numeric", GUIValidators.amountDecRegex))
       || ("milliSatoshi".equals(unit.getValue) && GUIValidators.validate(amount.getText, amountError, "Amount must be numeric (no decimal msat)", GUIValidators.amountRegex))) {
       try {
@@ -60,12 +60,12 @@ class ReceivePaymentController(val handlers: Handlers, val stage: Stage) extends
             throw new NumberFormatException("incorrect amount")
         }
         val smartAmount = unit.getValue match {
-          case "milliBTC" => MilliSatoshi(parsedInt.toLong * 100000000L + amountDec.toLong * 100000L)
+          case "milliMONA" => MilliSatoshi(parsedInt.toLong * 100000000L + amountDec.toLong * 100000L)
           case "Satoshi" => MilliSatoshi(parsedInt.toLong * 1000L + amountDec.toLong)
           case "milliSatoshi" => MilliSatoshi(amount.getText.toLong)
         }
         if (GUIValidators.validate(amountError, "Amount must be greater than 0", smartAmount.amount > 0)
-          && GUIValidators.validate(amountError, f"Amount must be less than ${PaymentRequest.maxAmount.amount}%,d msat (~${PaymentRequest.maxAmount.amount / 1e11}%.3f BTC)", smartAmount < PaymentRequest.maxAmount)
+          && GUIValidators.validate(amountError, f"Amount must be less than ${PaymentRequest.maxAmount.amount}%,d msat (~${PaymentRequest.maxAmount.amount / 1e11}%.3f MONA)", smartAmount < PaymentRequest.maxAmount)
           && GUIValidators.validate(amountError, "Description is too long, max 256 chars.", description.getText().size < 256)) {
           import scala.concurrent.ExecutionContext.Implicits.global
           handlers.receive(smartAmount, description.getText) onComplete {

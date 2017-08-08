@@ -54,7 +54,7 @@
         <ComboBox fx:id="unit" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
             <items>
                 <FXCollections fx:factory="observableArrayList">
-                    <String fx:id="milliBTC" fx:value="milliBTC" />
+                    <String fx:id="milliMONA" fx:value="milliMONA" />
                     <String fx:id="Satoshi" fx:value="Satoshi" />
                     <String fx:id="milliSatoshi" fx:value="milliSatoshi" />
                 </FXCollections>

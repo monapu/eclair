@@ -26,7 +26,7 @@ class OpenChannelController(val handlers: Handlers, val stage: Stage) extends Lo
     *
     * https://github.com/lightningnetwork/lightning-rfc/blob/master/02-peer-protocol.md#requirements
     */
-  val maxFunding = 16777216L * 100
+  val maxFunding = 16777216L * 100L
   val maxPushMsat = 1000L * maxFunding
 
   @FXML var host: TextField = _
@@ -62,7 +62,7 @@ class OpenChannelController(val handlers: Handlers, val stage: Stage) extends Lo
           && GUIValidators.validate(fundingSatoshisError, "Funding must be greater than 0", fundingSatoshis.getText.toLong > 0)) {
           val rawFunding = fundingSatoshis.getText.toLong
           val smartFunding = unit.getValue match {
-            case "milliBTC" => Satoshi(rawFunding * 100000L)
+            case "milliMONA" => Satoshi(rawFunding * 100000L)
             case "Satoshi" => Satoshi(rawFunding)
             case "milliSatoshi" => Satoshi(rawFunding / 1000L)
           }
